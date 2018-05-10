@@ -134,6 +134,7 @@ device_write(struct file *filp, const char *buff, size_t len, loff_t * off)
 {
     unsigned int led_mask = 0;
     int led_mask_use[len];
+    char * buff_local;
     int i;
     if (copy_from_user(buff_local, buff, len))
         return -EFAULT;
