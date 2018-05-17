@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
 }
 
 void controlOption(int optionPanel, int fd){
-	
+	printf("Pablo la tiene pequenia");
 	switch(optionPanel){
 		case 1:
 			binaryCount(fd);
