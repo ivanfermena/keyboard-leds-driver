@@ -36,7 +36,6 @@ static int Device_Open = 0;	/* Is device open?
 static char msg[BUF_LEN];	/* The msg the device will give when asked */
 static char *msg_Ptr;		/* This will be initialized every time the
 				   device is opened successfully */
-static char *buff_local;
 static int counter=0;		/* Tracks the number of times the character
 				 * device has been opened */
 
@@ -134,11 +133,12 @@ device_write(struct file *filp, const char *buff, size_t len, loff_t * off)
 {
     unsigned int led_mask = 0;
     int led_mask_use[len];
+    char *buff_local;
     int i;
-    if (copy_from_user(buff_local, buff, len))
+    if (copy_from_user(&buff_local, buff, len))
         return -EFAULT;
     for(i = 0; i < len; ++i){
-        switch (buff_local[i] - '0'){
+        switch (buff[i] - '0'){
             case 1:{
                 if(!led_mask_use[i]){
                     led_mask += 0x1;
