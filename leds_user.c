@@ -15,20 +15,18 @@ int main(int argc, char *argv[]){
 	int optionMenu = -1;
 
 	int fd = 0;
-	/*if(argc<1) fd = open(argv[1], O_RDWR);
-	else*/ fd = open("dev/kb-leds", O_RDWR);
+	if(argc<1) fd = open(argv[1], O_RDWR);
+	else fd = open("dev/kb-leds", O_RDWR);
 
 	do{
-		printf("Menu:\n");	
+		printf("\nMenu:\n");	
 		printf("0: Exit.\n");	
 		printf("1: Lineal.\n");		
 		printf("2: Circular.\n");
 		printf("3: Propio orden.\n\n");
 
-		printf("Ingrese la opcion que desee:");
+		printf("Ingrese la opcion que desee: ");
 		scanf("%d", &optionMenu);
-
-		printf("%d----\n", optionMenu);
 
 		controlOption(optionMenu, fd);
 				
@@ -73,7 +71,7 @@ void binaryCount(int fd){
 			return;
 		}
 		// Dormimos un seg
-		usleep(10000);
+		usleep(1000000);
 	}	
 	
 
@@ -83,14 +81,14 @@ void circular(int fd){
 	int maxCount = 0, wr = 0, i;
 	char *buffLeds = 0;
 
-	printf("Introduce el numero de ciclos:");
-	scanf("%d\n", &maxCount);
+	printf("Introduce el numero de ciclos: ");
+	scanf("%d", &maxCount);
 	
 	// Multiplicamos por tres y asi se hacen los tres por el numero del usuario
 	maxCount = maxCount * 3;
 
 	for(i = 0; i < maxCount; i++){
-		switch(i % 3){
+		switch(i%3){
 			case 0: buffLeds = "100"; break;
 			case 1: buffLeds = "010"; break;
 			case 2: buffLeds = "001"; break;
@@ -100,28 +98,28 @@ void circular(int fd){
 			return;
 		}
 		// Dormimos un seg
-		//usleep(10000);
+		usleep(1000000);
 	}
 }
 
 void specificOrder(int fd){
-	char *buffLeds = 0;
+	char *buffLeds = '';
 	int wr = 0;
 
-	printf("Introduce los leds a enceder: (ejemplo: 010)");
-	scanf("%79s\n", &buffLeds);
+	printf("Introduce los leds a enceder (ejemplo: 010):");
+	scanf("%c", &buffLeds);
+
+	printf("%d\n", strlen(buffLeds));
+
 	while(strlen(buffLeds) != 3){
-		printf("Introduce los leds a enceder: (ejemplo: 010)");
-		printf("Introduce los leds a enceder: (ejemplo: 010)");
-		scanf("%79s\n", buffLeds);
+		printf("\nIntroduce los leds a enceder (ejemplo: 010):");
+		scanf("%c", &buffLeds);
 	}
-
-	
-
-	wr = write(fd, buffLeds, strlen(buffLeds));
-	if(wr < 0){ //Error
-		return;
-	}
+	printf("-%s-\n", buffLeds);
+	//wr = write(fd, buffLeds, strlen(buffLeds));
+	//if(wr < 0){ //Error
+	//	return;
+	//}
 	// Dormimos un seg
 	usleep(10000);
 }
