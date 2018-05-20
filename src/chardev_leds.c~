@@ -138,23 +138,16 @@ device_write(struct file *filp, const char *buff, size_t len, loff_t * off)
     int i;
     if (copy_from_user(buff_local, buff, len))
         return -EFAULT;
-    printk( KERN_INFO "Size :  %d \n", len);
     for(i = 0; i < len; ++i){
-	printk( KERN_INFO "i= %d , buff_local[i]=%c \n", i, buff_local[i]);
         switch (buff_local[i]){
             case '1':{
                     led_mask |= 0x1;
-			printk( KERN_INFO "LOCURA CASE 1:  %d \n", i);
             } break;
             case '2':{
-                    led_mask |= 0x2;
-			printk( KERN_INFO "LOCURA CASE 2:  %d \n", i);
-               
+                    led_mask |= 0x2;               
             } break;
             case '3':{
-                    led_mask |= 0x4;
-	 		printk( KERN_INFO "LOCURA CASE 3:  %d \n", i);
-              
+                    led_mask |= 0x4;              
             } break;
             default:{} break;
         }

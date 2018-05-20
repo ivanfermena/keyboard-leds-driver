@@ -152,8 +152,6 @@ device_write(struct file *filp, const char *buff, size_t len, loff_t * off)
             default:{} break;
         }
     }
-	printk( KERN_INFO "buff_local :  %s \n", buff_local);
-	printk( KERN_INFO "LEDs setup: %d \n", led_mask);
 
     set_leds(kbd_driver,led_mask);
 
@@ -173,7 +171,7 @@ static int device_open(struct inode *inode, struct file *file)
     Device_Open++;
 
     /* Initialize msg */
-    sprintf(msg, "Selected LEDs now shine as the sun!\n", counter++);
+    sprintf(msg, "Bon dia!\n", counter++);
 
     /* Initially, this points to the beginning of the message */
     msg_Ptr = msg;
