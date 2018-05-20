@@ -101,6 +101,8 @@ static int __init modleds_init(void)
     major=MAJOR(start);
     minor=MINOR(start);
 
+    printk(KERN_INFO "I was assigned major number %d and minor number %d. To talk to\n",major,minor);
+    printk( KERN_INFO "sudo mknod -m 666 /dev/%s c %d %d'.\n",DEVICE_NAME, major,minor);
 
     kbd_driver= get_kbd_driver_handler();
     set_leds(kbd_driver,ALL_LEDS_OFF);
@@ -133,35 +135,36 @@ device_write(struct file *filp, const char *buff, size_t len, loff_t * off)
 {
     unsigned int led_mask = 0;
     int led_mask_use[len];
-    char *buff_local;
+    char buff_local[len];
     int i;
-    if (copy_from_user(&buff_local, buff, len))
+    if (copy_from_user(buff_local, buff, len))
         return -EFAULT;
     for(i = 0; i < len; ++i){
-        switch (buff[i] - '0'){
-            case 1:{
+        switch (buff_local[i]){
+            case '1':{
                 if(!led_mask_use[i]){
                     led_mask += 0x1;
                     led_mask_use[i] = 1;
                 }
             } break;
-            case 2:{
+            case '2':{
                 if(!led_mask_use[i]){
                     led_mask += 0x2;
                     led_mask_use[i] = 1;
                 }
             } break;
-            case 3:{
+            case '3':{
                 if(!led_mask_use[i]){
                     led_mask += 0x4;
                     led_mask_use[i] = 1;
                 }
             } break;
+            default:{} break;
         }
     }
     set_leds(kbd_driver,led_mask);
 
-    return SUCCESS;
+    return len;
 }
 
 
