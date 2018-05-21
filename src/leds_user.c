@@ -127,6 +127,7 @@ void circular(int fd){
 			case 2: {buffLeds = "3";} break;
 			default: {} break;
 		}
+		printf("i= %d, buffLeds= %s", i, buffLeds);
 		wr = write(fd, buffLeds, strlen(buffLeds));
 		if(wr < 0){ //Error
 			printf("write() failed with error [%s]\n", strerror(errno));
